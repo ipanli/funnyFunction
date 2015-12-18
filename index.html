@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>funnyFunction Demo</title>
+    <link rel="stylesheet" type="text/css" href="vendor/pure-min.css">
+    <link rel="stylesheet" type="text/css" href="funnyFunction.css">
+    <link rel="stylesheet" type="text/css" href="vendor/highlight/monokai_sublime.css">
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="vendor/layer/src/layer.js"></script>
+    <script src='funnyFunction.js'></script>
+    <script src='funnyFunction-tmpl.js'></script>
+    <script type="text/javascript" src="vendor/doT.min.js"></script>
+    <script src="index.js"></script>
+    <script src='vendor/highlight.pack.js'></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+<div id="fnCount">
+    <h2>Methods :<span></span></h2>
+</div>
+<div id="layout">
+    <div id="menu">
+        <div class="pure-menu">
+            <a class="pure-menu-heading" href="#ff" style="text-transform: none">funnyFunction</a>
+            <ul class="pure-menu-list" id="menuList">
+            </ul>
+        </div>
+    </div>
+    <div id="main">
+        <div class="content" id="content">
+        </div>
+        <script id="funnyMenuTmpl" type="text/x-dot-template">
+                {{ for(var objs in it) { }}
+                <li class="pure-menu-item">
+                    <a href="#{{=objs}}" title="{{=it[objs].dest}}" class="pure-menu-link">{{=objs}}</a>
+                </li> 
+                {{ } }}
+            </script>
+        <script id="funnyContentTmpl" type="text/x-dot-template">
+                  <h1 id="ff">funnyFunction</h1>
+                  {{ for(var objs in it) { }}
+                    <div class="fnwrap" id={{=objs}}>
+                        <div class="btnwrap">
+                            <h2 class="name">{{=objs}}</h2>
+                        </div>
+                        {{ for(var obj in it[objs]) { }} 
+                           {{if(obj === "name"){ }}
+                                <h2 class="name">{{=it[objs][obj]}}</h2>
+                           {{ } }}
+
+                           {{if(obj === "fullname"){ }}
+                                <p class="fullname">{{=it[objs][obj]}}</p>
+                           {{ } }}
+
+                           {{if(obj === "dest"){ }}
+                                <p class="dest">{{=it[objs][obj]}}</p>
+                           {{ } }}  
+
+                           {{if(obj === "paramdest"){ }}
+                                <h3 class="title1">参数</h3>
+                                {{ for(var param in it[objs][obj]) { }}
+                                <p>{{=it[objs][obj][param]}}</p>
+                                {{ } }} 
+                           {{ } }} 
+
+                           {{if(obj === "treturn"){ }}
+                                <h3 class="title2">返回</h3>
+                                <p class="return">{{=it[objs][obj]}}</p>
+                           {{ } }} 
+
+                           {{if(obj === "viewCode"){ }}
+                                {{ for(var videCode in it[objs][obj]) { }}
+                                    <div class="fnExample">
+                                        <h3 class="title3">示例</h3>
+                                        <form class="pure-form">
+                                            <fieldset class="pure-group">
+                                                <textarea class="runcode pure-input-1-1" rows="5">
+                                                    {{=it[objs][obj][videCode].replace(/@/ig, '\r\n')}}
+                                                </textarea>
+                                            </fieldset>
+                                            <div class="btngroup">
+                                                <input type="hidden" class="{{=objs}}Run" value="{{=it[objs][obj][videCode].replace(/@/ig, '\r\n')}}"></input>
+                                                <button data-run="{{=objs}}" data-runIndex="{{=videCode}}" class="pure-button pure-input-1-1 pure-button-primary runcodebtn">运行</button>
+                                                <button class="pure-button pure-input-1-1 pure-button-primary viewcodebtn">显示代码</button>
+                                            </div>
+                                        </form>
+                                       
+              
+                                    </div>
+                                {{ } }} 
+                           {{ } }} 
+                           {{if(obj === "html"){ }}
+                                {{ for(var html in it[objs][obj]) { }}
+                                     {{=it[objs][obj][html]}}
+                                {{ } }} 
+                           {{ } }}
+                           {{if(obj === "showType"){ }}
+                                {{ for(var showtype in it[objs][obj]) { }}
+                                     <input type="hidden" class="{{=objs}}showType" value="{{=it[objs][obj][showtype]}}"></input>
+                                {{ } }} 
+                           {{ } }}
+                        {{ } }}
+                    </div>
+                  {{ } }}
+            </script>
+        <script type="text/javascript">
+            var menuTmpl = doT.template(document.getElementById('funnyMenuTmpl').text);
+            $("#menuList").html(menuTmpl(funnyContentTmpl));
+
+            var contentTmpl = doT.template(document.getElementById('funnyContentTmpl').text);
+            $("#content").html(contentTmpl(funnyContentTmpl));
+        </script>
+
+    </div>
+</div>
+</body>
+<!--                                        <pre>-->
+<!--                                           <code class="javascript hljs">-->
+<!--                                              {{=it[objs][obj][videCode].replace(/@/ig, '\r\n')}}-->
+<!--                                           </code>-->
+<!--                                        </pre>-->
+</html>
